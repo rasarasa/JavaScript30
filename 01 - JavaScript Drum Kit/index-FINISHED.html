@@ -58,7 +58,30 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
+  'use strict';
 
+  function playSound(e) { // how does this get e?
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`),
+          button = document.querySelector(`.key[data-key="${e.keyCode}"]`);
+
+    if (!audio) {
+      return;
+    }
+
+    // why no else condition?
+    audio.currentTime = 0; // rewind to the start
+    audio.play();
+    button.classList.add('playing');
+  };
+
+  function removeTransition(e) {
+    if (e.propertyName !== 'transform') return;
+    this.classList.remove('playing');
+  }
+
+  const keys = document.querySelectorAll('.key');
+  keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+  window.addEventListener('keydown', playSound); // how does this sends e?
 </script>
 
 
